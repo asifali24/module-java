@@ -25,6 +25,8 @@ public class GlobalApiResponse implements ResponseBodyAdvice<Object> {
             return body;
         }
 
-        return new ApiResponse<>(body);
+        return ApiResponse.builder()
+                .data(body)
+                .build();
     }
 }

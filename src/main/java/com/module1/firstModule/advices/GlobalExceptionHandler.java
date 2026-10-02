@@ -7,10 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,26 +20,29 @@ public class GlobalExceptionHandler {
                 .message(exception.getMessage())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(formateError(err));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(formatError(err));
     }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<?>> validationErrors(MethodArgumentNotValidException exception){
-        List<String> errors = exception
-                .getBindingResult()
+    public ResponseEntity<ApiResponse<?>> validationErrors(
+            MethodArgumentNotValidException exception
+    ) {
+        List<String> errors = exception.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map((e)-> e.getDefaultMessage())
-                .collect(Collectors.toList());
+                .map(error -> error.getDefaultMessage())
+                .toList();
 
         ApiError err = ApiError.builder()
-                .message("invalid input Validation")
+                .message("Invalid input validation")
                 .status(HttpStatus.BAD_REQUEST)
                 .errorList(errors)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(formateError(err));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(formatError(err));
     }
 
 
@@ -55,12 +56,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(formateError(err));
+                .body(formatError(err));
     }
 
 
-    private ApiResponse<?>  formateError(ApiError err){
-        return  ApiResponse.builder()
+    private ApiResponse<?> formatError(ApiError err){
+        return ApiResponse.<Object>builder()
                 .error(err)
                 .build();
     }
