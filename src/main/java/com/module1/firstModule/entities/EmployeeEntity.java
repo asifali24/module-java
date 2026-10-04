@@ -4,6 +4,8 @@ package com.module1.firstModule.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -18,5 +20,9 @@ public class EmployeeEntity {
     private String email;
     private Boolean isActive;
     private int age;
+
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }

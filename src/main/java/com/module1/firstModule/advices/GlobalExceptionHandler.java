@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
                 .toList();
 
         ApiError err = ApiError.builder()
-                .message("Invalid input validation")
+                .message("Invalid input validation "+ exception.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
                 .errorList(errors)
                 .build();
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
         ApiError err = ApiError
                 .builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .message("Internal Server Error")
+                .message("Internal Server Error "+ exc.getMessage())
                 .build();
 
         return ResponseEntity
@@ -63,6 +63,7 @@ public class GlobalExceptionHandler {
     private ApiResponse<?> formatError(ApiError err){
         return ApiResponse.<Object>builder()
                 .error(err)
+                .status(false)
                 .build();
     }
 }
