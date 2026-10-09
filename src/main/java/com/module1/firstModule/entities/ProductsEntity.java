@@ -1,5 +1,6 @@
 package com.module1.firstModule.entities;
 
+import com.module1.firstModule.entities.types.ProductsType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +44,9 @@ public class ProductsEntity {
     private String title;
 
     private int prise;
+
+    @Enumerated(EnumType.STRING)
+    private ProductsType type;
 
 
 
